@@ -14,7 +14,9 @@ app.use(express.json());
 
 // Routes Import
 const userRoute = require("./routes/userRoute");
+const mailRoute = require("./routes/mailRoute");
 
 app.use("/api/user", userRoute);
+app.use("/api/mail-verify", mailRoute);
 
 app.listen(PORT, () => console.log(`Running on ${PORT}`));

@@ -16,8 +16,12 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: String,
+    default: "pending",
+  },
 });
 
 const User = mongoose.model("User", UserSchema);
 
-module.export = User;
+module.exports = User;
