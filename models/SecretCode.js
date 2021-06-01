@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 
 const SecretCode = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-  },
-
   email: {
     type: String,
     required: true,
