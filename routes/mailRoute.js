@@ -49,12 +49,12 @@ router.get("/:username", async (req, res) => {
           try {
             await secretCode.save();
             console.log(secretCode);
-            sendMail(user.email, code, () => res.sendStatus(200));
+            sendMail(user.email, code, () => res.status(200).send(user));
           } catch (error) {
             console.log(error);
           }
         } else {
-          res.send("User Already Registered");
+          res.status(418).send("User Already Registered");
         }
       }
     }
@@ -65,24 +65,25 @@ router.get("/:username", async (req, res) => {
 
 router.post("/verify", (req, res) => {
   const { email, code } = req.body;
+  console.log(email, code);
   SecretCode.findOne({ email: email }, (error, secretCode) => {
     if (error) {
       console.log(error);
       res.status(418).send("DB Error Occured");
-    }
-    if (!secretCode) {
+    } else if (!secretCode) {
       res.status(418).send("No User Has This Email");
-    }
-
-    // Check The Code
-    if (code === secretCode.code) {
-      User.updateOne({ email: email }, { status: "verified" }, (error) => {
-        if (error) {
-          console.log(error);
-          res.send("error when update");
-        }
-        res.status(200).send("Verified");
-      });
+    } else {
+      console.log(secretCode);
+      // Check The Code
+      if (code === secretCode.code) {
+        User.updateOne({ email: email }, { status: "verified" }, (error) => {
+          if (error) {
+            console.log(error);
+            res.send("error when update");
+          }
+          res.status(200).send("Verified");
+        });
+      }
     }
   });
 });
